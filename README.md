@@ -9,7 +9,7 @@ Points in the figure are color grouped according to group and scattered by respe
 ![Points distribution form corresponding lat long](/image/plot_points.jpg)
 
 ### I/O files
-Both input and output file support xlsx/xls(Microsoft Excel) and csv format.
+Both input and output file support `xlsx`/`xls`(Microsoft Excel) and `csv` format.
 The I/O files follow certain schema as showing below:
 
 **Input file schema**
