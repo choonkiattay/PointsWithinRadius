@@ -56,18 +56,27 @@ def nearest(latlong_df):
 if __name__ == "__main__":
 
     args = init_args()
+    input_filetype = args.input.split('.')[1]
+    output_filetype = args.output.split('.')[1]
 
     start_time = time.time()
-    filetype = args.input.split('.')[1]
-    if filetype == 'xlsx' or 'xls':
+    
+    if input_filetype == 'xlsx' or 'xls':
         latlong_df = pd.read_excel(args.input, header=1, index_col=0)
-    elif filetype == 'csv':
+    elif input_filetype == 'csv':
         latlong_df = pd.read_csv(args.input, header=1, index_col=0)
     else:
-        print('Unsupported file type. Only for excel or csv.')
+        print('Unsupported input file type. Only for xls/xlsx or csv.')
+    
     latlong_df['site_latlong'] = list(zip(latlong_df['site'],list(zip(latlong_df['lat'],latlong_df['long']))))
     latlong_df['radius_limit'] = float(args.within_radius)
     final_df = parallelize_dataframe(latlong_df, nearest)
-    final_df.to_excel(args.output)
+
+    if output_filetype == 'xlsx' or 'xls':
+        final_df.to_excel(args.output)
+    elif output_filetype == 'csv':
+        final_df.to_csv(args.output)
+    else:
+        print('Unsupported output file type. Only for xls/xlsx or csv.')
     
-    print("--- Processed in {} seconds ---".format((time.time() - start_time)))
+    print("--- [DONE] Processed in {} seconds ---".format((time.time() - start_time)))
