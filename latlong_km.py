@@ -58,7 +58,13 @@ if __name__ == "__main__":
     args = init_args()
 
     start_time = time.time()
-    latlong_df = pd.read_excel(args.input, header=1, index_col=0)
+    filetype = args.input.split('.')[1]
+    if filetype == 'xlsx' or 'xls':
+        latlong_df = pd.read_excel(args.input, header=1, index_col=0)
+    elif filetype == 'csv':
+        latlong_df = pd.read_csv(args.input, header=1, index_col=0)
+    else:
+        print('Unsupported file type. Only for excel or csv.')
     latlong_df['site_latlong'] = list(zip(latlong_df['site'],list(zip(latlong_df['lat'],latlong_df['long']))))
     latlong_df['radius_limit'] = float(args.within_radius)
     final_df = parallelize_dataframe(latlong_df, nearest)
